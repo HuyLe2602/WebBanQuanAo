@@ -4,21 +4,21 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
-using System.Web.WebPages.Instrumentation;
 
 namespace BanHangOnline.Models.EF
 {
-    [Table("tb_Category")]
-    public class Category : CommonAbstract
+        [Table("tb_ProductCategory")]
+    public class ProductCategory: CommonAbstract
     {
-        public Category() 
-        { 
-            this.News = new HashSet<News>();
+        public ProductCategory() 
+        {
+            this.Products = new HashSet<Product>();
         }
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
+        [Required]
+        [StringLength(150)]
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -28,11 +28,7 @@ namespace BanHangOnline.Models.EF
         public string seoDescription { get; set; }
 
         public string seoKeywords { get; set; }
-        
-        public string Position { get; set; }
 
-        public ICollection<News> News { get; set; }
-
-        public ICollection<Posts> Posts { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }
