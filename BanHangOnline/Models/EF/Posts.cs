@@ -30,6 +30,7 @@ namespace BanHangOnline.Models.EF
         public string SeoDescription { get; set; }
 
         public string SeoKeywords { get; set; }
-        public virtual Posts Posts { get; set; }
+        // Navigation to a parent post (if used). Renamed to avoid member name == type error.
+        public virtual Posts ParentPost { get; set; }
     }
 }

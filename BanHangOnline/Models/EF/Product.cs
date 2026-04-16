@@ -46,6 +46,7 @@ namespace BanHangOnline.Models.EF
 
         public string SeoKeywords { get; set; }
 
+
         public virtual ProductCategory ProductCategory { get; set; }
     }
 }

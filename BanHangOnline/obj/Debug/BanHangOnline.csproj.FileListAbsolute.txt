@@ -106,3 +106,5 @@ C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.cs
 C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangO.33D188C9.Up2Date
 C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.dll
 C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.pdb
+C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.Migrations.CreatedDatabase.resources
+C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.csproj.GenerateResource.cache
