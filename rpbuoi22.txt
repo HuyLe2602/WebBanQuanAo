@@ -1,1 +1,0 @@
-Lam duoc CategoryController de goi trang chu va chuc nang Add cua Categroy, class Add them danh muc, Index giao dien cua Category

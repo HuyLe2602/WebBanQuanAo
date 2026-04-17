@@ -169,6 +169,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
@@ -180,6 +181,10 @@
     <Compile Include="Migrations\202604161107353_ CreatedDatabase.cs" />
     <Compile Include="Migrations\202604161107353_ CreatedDatabase.Designer.cs">
       <DependentUpon>202604161107353_ CreatedDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202604171241525_UpdateCategory.cs" />
+    <Compile Include="Migrations\202604171241525_UpdateCategory.Designer.cs">
+      <DependentUpon>202604171241525_UpdateCategory.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -2286,6 +2291,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202604161107353_ CreatedDatabase.resx">
       <DependentUpon>202604161107353_ CreatedDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202604171241525_UpdateCategory.resx">
+      <DependentUpon>202604171241525_UpdateCategory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

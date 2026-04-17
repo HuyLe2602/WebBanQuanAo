@@ -18,15 +18,16 @@ namespace BanHangOnline.Models.EF
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
+        [Required(ErrorMessage = "Khong được để trống tên danh mục")]
+        [StringLength(250)]
         public string Title { get; set; }
 
         public string Description { get; set; }
-
+        [StringLength(250)]
         public string seoTitle { get; set; }
-
+        [StringLength(250)]
         public string seoDescription { get; set; }
-
+        [StringLength(250)]
         public string seoKeywords { get; set; }
         
         public string Position { get; set; }
