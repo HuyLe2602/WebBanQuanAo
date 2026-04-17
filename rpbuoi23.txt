@@ -1,4 +1,0 @@
-Lam duoc:
-Ket noi cac trang trong category va hoan thien category add: them danh muc , luu category ve database, hoan thien index category: trang chu cua category
-Chua lam duoc:
-Xoa tin tuc, Xoa nhieu tin tuc,Quan ly bai viet va phan trang,quan ly san pham,them sua xoa sanpham,ghep giao dien nguoi dung,tao route,chi tiet san pham, chuc nang gio hang,dem so luot truy cap,gui gmail khi khach hang dat thanh cong,quan ly don hang,cau hinh he thong trang chu,cac muc phan News,Tich hop thanh toan
