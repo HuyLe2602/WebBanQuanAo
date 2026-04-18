@@ -1,0 +1,59 @@
+@model BanHangOnline.Models.EF.Category
+@{
+    ViewBag.Title = "Chỉnh sửa danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Chỉnh sửa danh mục</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Chỉnh sửa</h3>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Edit", "Category", new { area = "Admin" }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.Id)
+                <div class="form-group">
+                    <label>Tiêu đề</label>
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Thứ tự</label>
+                    @Html.TextBoxFor(m => m.Position, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Seo Title</label>
+                    @Html.TextBoxFor(m => m.seoTitle, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Seo Description</label>
+                    @Html.TextBoxFor(m => m.seoDescription, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Seo Keywords</label>
+                    @Html.TextBoxFor(m => m.seoKeywords, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <a href="/admin/category" class="btn btn-danger">Quay lại</a>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            }
+        </div>
+    </div>
+</section>

@@ -53,7 +53,7 @@
         </div>
         <div class="card-body">
             <div class="bs-stepper-content">
-                @using (Html.BeginForm("Add", "Category", FormMethod.Post, new { }))
+                @using (Html.BeginForm("Add", "Category", new { area = "Admin" }, FormMethod.Post, new { }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)

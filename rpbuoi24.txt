@@ -1,0 +1,39 @@
+1.Làm được:
+
+- Chuẩn hoá Tiếng Việt cho web bằng hàm FilterChar
+
+-Xoá dấu cho tiếng Việt bằng hàm Chuyencodauthanhkhongdau
+
+-Fix được nút Xoá để xoá dữ liệu database trong category và nút Sửa dùng để Update cho database
+
+2.Chưa làm được:
+
+-Xóa tin tức
+
+-Xóa nhiều tin tức
+
+-Quản lý bài viết và phân trang
+
+-Quản lý sản phẩm
+
+-Thêm, sửa, xóa sản phẩm
+
+-Ghép giao diện người dùng
+
+-Tạo route
+
+-Chi tiết sản phẩm
+
+-Chức năng giỏ hàng
+
+-Đếm số lượt truy cập
+
+-Gửi Gmail khi khách hàng đặt thành công
+
+-Quản lý đơn hàng
+
+-Cấu hình hệ thống trang chủ
+
+-Các mục phần News
+
+-Tích hợp thanh toán

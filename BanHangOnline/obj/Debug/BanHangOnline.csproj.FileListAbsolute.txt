@@ -109,3 +109,4 @@ C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.pd
 C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.Migrations.CreatedDatabase.resources
 C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.csproj.GenerateResource.cache
 C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.Migrations.UpdateCategory.resources
+C:\project\WebsiteBanHang\BanHangOnline\BanHangOnline\obj\Debug\BanHangOnline.Migrations.UpdateData.resources
