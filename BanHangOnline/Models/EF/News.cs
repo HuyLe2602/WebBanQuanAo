@@ -13,10 +13,10 @@ namespace BanHangOnline.Models.EF
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Ten tin tuc khong duoc de trong")]
         [StringLength(150)]
         public string Title { get; set; }
-
+        
         public string Alias { get; set; }
 
         public string Description { get; set; }
