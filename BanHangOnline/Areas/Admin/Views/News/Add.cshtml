@@ -10,7 +10,7 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        </li>
+        <!-- removed duplicate closing </li> -->
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/admin" class="nav-link">Trang Chu</a>
         </li>
@@ -58,46 +58,44 @@
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)
                     <!-- your steps content here -->
-                <div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Tieu de Tin Tuc</label>
-                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tieu de tin tuc " })
-                        @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
-                    </div>
-                    <div class="col-6">
-                        <label for="exampleInputPassword1">Anh dai dien </label>
-                        @Html.TextBoxFor(x => x.Image, new { @class = "form-control", @placeholder = "Anh dai dien " })
+                    <div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
+                        <div class="form-group">
+                            <label for="exampleInputFile">Anh dai dien</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(x => x.Image, new { id = "txtImage", @class = "form-control", @placeholder = "Tieu de" })
+                                </div>
+                                <div class="input-group-append">
+                                    <input type="button" value="Tai anh" onclick="BrowseServer('txtImage')" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Mo ta </label>
+                            @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Chi tiet </label>
+                            @Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @id = "txtDetail" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Seotitle </label>
+                            @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">SeoDescription </label>
+                            @Html.TextAreaFor(x => x.SeoDescription, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">SeoKeywords </label>
+                            @Html.TextAreaFor(x => x.SeoKeywords, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <a href="/admin/category" class="btn btn-danger">Quay lai</a>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
 
                     </div>
-                    <div class="col-3">
-                        <input type="button" id="browseClick" value="Chon anh" />
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Mo ta </label>
-                        @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Chi tiet </label>
-                        @Html.TextAreaFor(x => x.Detail, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Seotitle </label>
-                        @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">SeoDescription </label>
-                        @Html.TextAreaFor(x => x.SW, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">SeoKeywords </label>
-                        @Html.TextAreaFor(x => x.SeoKeywords, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        <a href="/admin/category" class="btn btn-danger">Quay lai</a>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-
-                </div>
 
                 }
 
@@ -115,3 +113,22 @@
 <!-- /.content -->
   </div>
 <!-- /.content-wrapper -->
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/content/ckeditor/config.js',
+                extraAllowedContent: 'span'
+            });
+        });
+    function BrowseServer(field) {
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (fileUrl) {
+            document.getElementById(field).value = fileUrl;
+        };
+        finder.popup();
+    }
+    </script>
+}
