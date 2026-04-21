@@ -71,6 +71,11 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="Title">Tiêu đề</label>
+                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tiêu đề tin tức" })
+                            @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputPassword1">Mo ta </label>
                             @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })
                         </div>

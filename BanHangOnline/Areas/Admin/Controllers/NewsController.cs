@@ -21,9 +21,19 @@ namespace BanHangOnline.Areas.Admin.Controllers
         public ActionResult Add() {
             return View();
         }
-        public ActionResult Edit()
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                // Bad request when id not supplied
+                return new HttpStatusCodeResult(400);
+            }
+            var item = db.News.Find(id.Value);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            return View(item);
         }
 
         [HttpPost]
@@ -42,8 +52,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
                 if (model != null)
                 {
                     var now = System.DateTime.Now;
-                    model.CreatedDate = now;
-                    model.ModifiedDate = now;
+                    NewMethod(model, now);
                 }
                 model.Alias = BanHangOnline.Models.Common.Filter.FilterChar(model.Title);
                 db.News.Add(model);
@@ -53,5 +62,29 @@ namespace BanHangOnline.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpPost]
+[ValidateAntiForgeryToken]
+public ActionResult Edit(News model)
+{
+    if (ModelState.IsValid)
+    {
+        model.CreatedDate = DateTime.Now;
+        model.ModifiedDate = DateTime.Now;
+        model.Alias = BanHangOnline.Models.Common.Filter.FilterChar(model.Title);
+        db.News.Attach(model);
+        db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+        db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
+    return View(model);
+}
+
+
+        private static void NewMethod(News model, DateTime now)
+        {
+            model.CreatedDate = now;
+            model.ModifiedDate = now;
+        }
     }
 }

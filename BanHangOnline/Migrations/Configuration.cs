@@ -9,7 +9,11 @@
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            // Enable automatic migrations so the database schema is updated to match the model.
+            // If you prefer explicit code-based migrations, set this to false and run Add-Migration / Update-Database instead.
+            AutomaticMigrationsEnabled = true;
+            // Allow automatic migrations that may result in data loss (use with caution in production).
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(BanHangOnline.Models.ApplicationDbContext context)

@@ -1,4 +1,4 @@
-﻿@model IEnumerable <BanHangOnline.Models.EF.News>
+﻿@model IEnumerable<BanHangOnline.Models.EF.News>
 @{
     ViewBag.Title = "Danh Sach Tin Tuc";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -36,7 +36,6 @@
         </div>
     </div>
 </section>
-</section>
 
 
 <!-- Main content -->
@@ -54,12 +53,14 @@
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
-                <th> STT</th>
-                <th> Hinh Anh </th>
-                <th> Tieu de tin </th>
-                <th> Ngay Tao </th>
-                <th> Thu tu </th>
-                <th> </th>
+                <tr>
+                    <th> STT</th>
+                    <th> Hinh Anh </th>
+                    <th> Tieu de tin </th>
+                    <th> Ngay Tao </th>
+                    <th> Thu tu </th>
+                    <th> </th>
+                </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
@@ -67,12 +68,12 @@
                         var i = 1;
                         foreach (var item in Model)
                         {
-                            <tr id=" trow_@item.Id">
+                            <tr id="trow_@(item.Id)">
 
                                 <td>@i</td>
                                 <td>@item.Image</td>
                                 <td>@item.Title</td>
-                                <td>@item.CreatedDate.ToString()</td>
+                                <td>@(item.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss"))</td>
                                 <td>
                                     <a href='@Url.Action("Edit","News", new { area = "Admin", id = item.Id })' class="btn btn-sm btn-primary">Sửa</a>
                                     @using (Html.BeginForm("Delete", "News", new { area = "Admin", id = item.Id }, FormMethod.Post, new { @style = "display:inline;" }))
@@ -83,15 +84,14 @@
                                 </td>
 
                             </tr>
+                            i++;
                         }
-
-                        i++;
                     }
                     else
                     {
                         <tr>
 
-                            <td colspan="4"></td>
+                            <td colspan="6"></td>
 
                         </tr>
                     }

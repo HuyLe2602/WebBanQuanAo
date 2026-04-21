@@ -74,7 +74,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
                 item.seoTitle = model.seoTitle;
                 item.seoDescription = model.seoDescription;
                 item.seoKeywords = model.seoKeywords;
-                item.ModifiedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                item.ModifiedDate = DateTime.Now;
                 item.Alias = BanHangOnline.Models.Common.Filter.ChuyenCoDauThanhKhongDau(model.Title);
                 item.Alias = BanHangOnline.Models.Common.Filter.FilterChar(item.Alias);
 
@@ -91,9 +91,8 @@ namespace BanHangOnline.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                // CreatedDate is declared as string in CommonAbstract, convert DateTime to string
-                model.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                model.ModifiedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
                 model.Alias = BanHangOnline.Models.Common.Filter.ChuyenCoDauThanhKhongDau(model.Title);
                 model.Alias = BanHangOnline.Models.Common.Filter.FilterChar(model.Alias);
                 db.Categories.Add(model);
