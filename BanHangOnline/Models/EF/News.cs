@@ -29,6 +29,16 @@ namespace BanHangOnline.Models.EF
 
         public string CategoryId { get; set; }
 
+        // whether the news item is active/published
+        public bool IsActive { get; set; }
+
+        // mark as featured / important
+        public bool IsFeatured { get; set; }
+
+        // additional settings or tags (comma separated)
+        [StringLength(250)]
+        public string Settings { get; set; }
+
         public string SeoTitle { get; set; }
 
         public string SeoDescription { get; set; }

@@ -84,6 +84,22 @@
                             @Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @id = "txtDetail" })
                         </div>
                         <div class="form-group">
+                            <label for="IsActive">Trạng thái</label>
+                            <div>
+                                @Html.DropDownListFor(x => x.IsActive, new SelectList(new[] { new { Value = "true", Text = "Hoạt động" }, new { Value = "false", Text = "Không hoạt động" } }, "Value", "Text"), new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="IsFeatured">Nổi bật</label>
+                            <div>
+                                @Html.CheckBoxFor(x => x.IsFeatured)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Settings">Cài đặt / Tag</label>
+                            @Html.TextBoxFor(x => x.Settings, new { @class = "form-control", @placeholder = "ví dụ: home,featured" })
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputPassword1">Seotitle </label>
                             @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control" })
                         </div>

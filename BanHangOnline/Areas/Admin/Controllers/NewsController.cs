@@ -12,9 +12,22 @@ namespace BanHangOnline.Areas.Admin.Controllers
     {   
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Admin/News
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var items = db.News.OrderByDescending(x => x.Id).ToList();
+            const int pageSize = 10;
+            int pageNumber = page ?? 1;
+
+            var totalCount = db.News.Count();
+            var items = db.News.OrderByDescending(x => x.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
             return View(items);
         }
 
@@ -55,6 +68,10 @@ namespace BanHangOnline.Areas.Admin.Controllers
                     NewMethod(model, now);
                 }
                 model.Alias = BanHangOnline.Models.Common.Filter.FilterChar(model.Title);
+                // ensure defaults
+                model.IsActive = model.IsActive;
+                model.IsFeatured = model.IsFeatured;
+                model.Settings = model.Settings;
                 db.News.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -68,11 +85,24 @@ public ActionResult Edit(News model)
 {
     if (ModelState.IsValid)
     {
-        model.CreatedDate = DateTime.Now;
         model.ModifiedDate = DateTime.Now;
         model.Alias = BanHangOnline.Models.Common.Filter.FilterChar(model.Title);
-        db.News.Attach(model);
-        db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+        // update existing entity
+        var existing = db.News.Find(model.Id);
+        if (existing == null) return HttpNotFound();
+        existing.Title = model.Title;
+        existing.Image = model.Image;
+        existing.Description = model.Description;
+        existing.Detail = model.Detail;
+        existing.SeoTitle = model.SeoTitle;
+        existing.SeoDescription = model.SeoDescription;
+        existing.SeoKeywords = model.SeoKeywords;
+        existing.Alias = model.Alias;
+        existing.IsActive = model.IsActive;
+        existing.IsFeatured = model.IsFeatured;
+        existing.Settings = model.Settings;
+        existing.ModifiedDate = model.ModifiedDate;
+        db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
         db.SaveChanges();
         return RedirectToAction("Index");
     }
@@ -85,6 +115,43 @@ public ActionResult Edit(News model)
         {
             model.CreatedDate = now;
             model.ModifiedDate = now;
+        }
+
+        // POST: Admin/News/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            var item = db.News.Find(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.News.Remove(item);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        // POST: Admin/News/DeleteMultiple
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteMultiple(int[] ids)
+        {
+            if (ids == null || ids.Length == 0)
+            {
+                return new HttpStatusCodeResult(400, "No ids provided");
+            }
+
+            var items = db.News.Where(x => ids.Contains(x.Id)).ToList();
+            if (items.Any())
+            {
+                db.News.RemoveRange(items);
+                db.SaveChanges();
+            }
+
+            return new HttpStatusCodeResult(200);
         }
     }
 }

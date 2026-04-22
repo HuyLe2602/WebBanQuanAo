@@ -10,6 +10,8 @@ namespace BanHangOnline.Models.EF
         [Table("tb_Product")]
     public class Product: CommonAbstract
     {
+        internal int Gia;
+
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -50,5 +52,8 @@ namespace BanHangOnline.Models.EF
 
 
         public virtual ProductCategory ProductCategory { get; set; }
+        public string TenSanPham { get; internal set; }
+        public string DanhMuc { get; internal set; }
+        public string HinhAnh { get; internal set; }
     }
 }

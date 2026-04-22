@@ -1,0 +1,78 @@
+﻿@model BanHangOnline.Models.EF.Product
+@{
+    ViewBag.Title = "Thêm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="card">
+        <div class="card-header"><h3 class="card-title">Thêm sản phẩm</h3></div>
+        <div class="card-body">
+            @using (Html.BeginForm("Add", "Product", new { area = "Admin" }, FormMethod.Post, new { }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <div class="form-group">
+                    <label>Tên sản phẩm</label>
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label>Mã sản phẩm</label>
+                    @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control" })
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>Giá</label>
+                        @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Giá khuyến mãi</label>
+                        @Html.TextBoxFor(m => m.PriceSale, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Số lượng</label>
+                        @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mô tả ngắn</label>
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 3 })
+                </div>
+
+                <div class="form-group">
+                    <label>Chi tiết</label>
+                    @Html.TextAreaFor(m => m.Detail, new { @class = "form-control", id = "txtDetail" })
+                </div>
+
+                <div class="form-group">
+                    <label>Ảnh</label>
+                    @Html.TextBoxFor(m => m.Image, new { @class = "form-control", id = "txtImage" })
+                    <input type="button" value="Tải ảnh" onclick="BrowseServer('txtImage')" />
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <a href="@Url.Action("Index","Product", new { area = "Admin" })" class="btn btn-secondary">Hủy</a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    <script>
+        $(function () {
+            CKEDITOR.replace('txtDetail', { customConfig: '/content/ckeditor/config.js', extraAllowedContent: 'span' });
+        });
+        function BrowseServer(field) {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) { document.getElementById(field).value = fileUrl; };
+            finder.popup();
+        }
+    </script>
+}

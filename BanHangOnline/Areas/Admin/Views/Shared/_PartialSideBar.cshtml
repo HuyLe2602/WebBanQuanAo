@@ -28,7 +28,7 @@
             <!-- Add icons to the links using the .nav-icon class
     with font-awesome or any other icon font library -->
             <li class="nav-item">
-                <a href="/Category" class="nav-link">
+                <a href='@Url.Action("Index","Category", new { area = "Admin" })' class="nav-link">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
                         Danh mục
@@ -93,15 +93,15 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="~/Content/clients/index.html" class="nav-link">
+                        <a href='@Url.Action("Index","Category", new { area = "Admin" })' class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Danh muc</p>
+                            <p>Danh mục</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="~/Content/clients/index2.html" class="nav-link">
+                        <a href='@Url.Action("Index","Product", new { area = "Admin" })' class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>San Pham</p>
+                            <p>Sản phẩm</p>
                         </a>
                     </li>
 

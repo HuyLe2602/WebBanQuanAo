@@ -1,0 +1,73 @@
+﻿using BanHangOnline.Models;
+using BanHangOnline.Models.EF;
+using System;
+using System.Linq;
+using System.Web.Mvc;
+
+namespace BanHangOnline.Areas.Admin.Controllers
+{
+    public class ProductController : Controller
+    {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        // GET: Admin/Product/Add
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        // POST: Admin/Product/Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Add(Product model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (string.IsNullOrWhiteSpace(model.Title))
+                {
+                    ModelState.AddModelError("Title", "Tên sản phẩm không được để trống");
+                    return View(model);
+                }
+
+                var now = DateTime.Now;
+                model.CreatedDate = now;
+                model.ModifiedDate = now;
+
+                // build alias from title (use existing filter helper if available)
+                try
+                {
+                    model.Alias = BanHangOnline.Models.Common.Filter.ChuyenCoDauThanhKhongDau(model.Title);
+                    model.Alias = BanHangOnline.Models.Common.Filter.FilterChar(model.Alias);
+                }
+                catch
+                {
+                    model.Alias = model.Title;
+                }
+
+                db.Products.Add(model);
+                db.SaveChanges();
+                return RedirectToAction("Index", "Product");
+            }
+
+            return View(model);
+        }
+
+        // GET: Admin/Product (simple list redirect or view placeholder)
+        public ActionResult Index()
+        {
+            var items = db.Products.OrderByDescending(x => x.Id).ToList();
+            return View(items);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            var item = db.Products.Find(id);
+            if (item == null) return HttpNotFound();
+            db.Products.Remove(item);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+    }
+}

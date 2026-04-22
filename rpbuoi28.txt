@@ -1,0 +1,29 @@
+1. Làm được:
+
+--Quản lý bài viết và phân trang
+
+-Quản lý sản phẩm
+
+-Thêm, sửa, xóa sản phẩm(vẫn đang fix lỗi)
+
+2. Chưa làm được:
+
+-Ghép giao diện người dùng
+
+-Tạo route
+
+-Chi tiết sản phẩm
+
+-Chức năng giỏ hàng
+
+-Đếm số lượt truy cập
+
+-Gửi Gmail khi khách hàng đặt thành công
+
+-Quản lý đơn hàng
+
+-Cấu hình hệ thống trang chủ
+
+-Các mục phần News
+
+-Tích hợp thanh toán
