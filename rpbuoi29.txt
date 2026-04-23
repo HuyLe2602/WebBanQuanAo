@@ -1,0 +1,21 @@
+Chưa làm được:
+
+-Ghép giao diện người dùng( mới làm được 50% và vẫn đang update)
+
+-Tạo route
+
+-Chi tiết sản phẩm
+
+-Chức năng giỏ hàng
+
+-Đếm số lượt truy cập
+
+-Gửi Gmail khi khách hàng đặt thành công
+
+-Quản lý đơn hàng
+
+-Cấu hình hệ thống trang chủ
+
+-Các mục phần News
+
+-Tích hợp thanh toán
