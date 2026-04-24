@@ -3520,7 +3520,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
      = (object) Raphaël element object with type “image”
      **
      > Usage
-     | var c = paper.image("apple.png", 10, 10, 80, 80);
+     | var c = paper.image("apple.jpg", 10, 10, 80, 80);
     \*/
     paperproto.image = function (src, x, y, w, h) {
         var out = R._engine.image(this, src || "about:blank", x || 0, y || 0, w || 0, h || 0);

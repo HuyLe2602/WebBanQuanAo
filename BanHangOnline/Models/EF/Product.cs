@@ -50,10 +50,9 @@ namespace BanHangOnline.Models.EF
 
         public string SeoKeywords { get; set; }
 
-
         public virtual ProductCategory ProductCategory { get; set; }
         public string TenSanPham { get; internal set; }
         public string DanhMuc { get; internal set; }
-        public string HinhAnh { get; internal set; }
+        public string ProductImage   { get; internal set; }
     }
 }

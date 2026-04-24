@@ -22,12 +22,17 @@ namespace BanHangOnline.Models.EF
         public string Title { get; set; }
 
         public string Description { get; set; }
+        [StringLength(250)]
+
+        public string Icon { get; set; }
 
         public string seoTitle { get; set; }
 
         public string seoDescription { get; set; }
 
         public string seoKeywords { get; set; }
+
+        public string Alias { get; set; }
 
         public ICollection<Product> Products { get; set; }
     }

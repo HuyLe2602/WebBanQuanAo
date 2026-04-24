@@ -60,7 +60,7 @@ exports.decode = function(input) {
 
     if (input.substr(0, dataUrlPrefix.length) === dataUrlPrefix) {
         // This is a common error: people give a data url
-        // (data:image/png;base64,iVBOR...) with a {base64: true} and
+        // (data:image/jpg;base64,iVBOR...) with a {base64: true} and
         // wonders why things don't work.
         // We can detect that the string input looks like a data url but we
         // *can't* be sure it is one: removing everything up to the comma would

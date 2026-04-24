@@ -264,7 +264,7 @@ var Lightbox = (function ($) {
 		}, {
 			key: '_isImage',
 			value: function _isImage(string) {
-				return string && string.match(/(^data:image\/.*,)|(\.(jp(e|g|eg)|gif|png|bmp|webp|svg)((\?|#).*)?$)/i);
+				return string && string.match(/(^data:image\/.*,)|(\.(jp(e|g|eg)|gif|jpg|bmp|webp|svg)((\?|#).*)?$)/i);
 			}
 		}, {
 			key: '_containerToUse',

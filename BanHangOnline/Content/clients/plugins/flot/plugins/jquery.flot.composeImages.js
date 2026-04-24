@@ -106,7 +106,7 @@ temporary images load their data.
     }
 
     function copyCanvasToImg(canvas, img) {
-        img.src = canvas.toDataURL('image/png');
+        img.src = canvas.toDataURL('image/jpg');
     }
 
     function getCSSRules(document) {

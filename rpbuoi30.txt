@@ -1,0 +1,25 @@
+1.Làm được:
+- Nhật ký thực tập
+
+-Nhận xét thực tập
+
+-Làm được giao diện index( nhưng bị lỗi nữa)
+
+2.Chưa làm được:
+-Tạo route
+
+-Chi tiết sản phẩm
+
+-Chức năng giỏ hàng
+
+-Đếm số lượt truy cập
+
+-Gửi Gmail khi khách hàng đặt thành công
+
+-Quản lý đơn hàng
+
+-Cấu hình hệ thống trang chủ
+
+-Các mục phần News
+
+-Tích hợp thanh toán

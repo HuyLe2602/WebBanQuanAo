@@ -8997,7 +8997,7 @@ var Dropzone = /*#__PURE__*/function (_Emitter) {
 
 
           drawImageIOSFix(ctx, img, resizeInfo.srcX != null ? resizeInfo.srcX : 0, resizeInfo.srcY != null ? resizeInfo.srcY : 0, resizeInfo.srcWidth, resizeInfo.srcHeight, resizeInfo.trgX != null ? resizeInfo.trgX : 0, resizeInfo.trgY != null ? resizeInfo.trgY : 0, resizeInfo.trgWidth, resizeInfo.trgHeight);
-          var thumbnail = canvas.toDataURL("image/png");
+          var thumbnail = canvas.toDataURL("image/jpg");
 
           if (callback != null) {
             return callback(thumbnail, canvas);
