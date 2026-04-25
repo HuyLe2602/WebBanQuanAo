@@ -32,7 +32,7 @@ namespace BanHangOnline.Controllers
 
         public ActionResult MenuArrivals()
         {
-            var items = db.ProductCategories.ToList();
+            var items = db.Categories.ToList();
             return PartialView("_MenuArrivals", items);
         }
     }

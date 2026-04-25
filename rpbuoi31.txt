@@ -1,0 +1,18 @@
+1.Làm được:
+
+-Báo Cáo môn Đồ Án Chuyên Ngành 
+
+2.Chưa làm được:
+
+-Tạo route
+
+-Chi tiết sản phẩm
+
+-Chức năng giỏ hàng
+
+-Quản lý đơn hàng
+
+-Cấu hình hệ thống trang chủ
+
+-Các mục phần News
+
