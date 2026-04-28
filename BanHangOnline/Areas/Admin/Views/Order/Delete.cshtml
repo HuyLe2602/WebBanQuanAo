@@ -1,0 +1,127 @@
+﻿@model BanHangOnline.Models.EF.Order
+
+@{
+    ViewBag.Title = "Xóa Đơn Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Xác Nhận Xóa Đơn Hàng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Admin</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Order")">Đơn Hàng</a></li>
+                    <li class="breadcrumb-item active">Xóa</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <!-- Alert cảnh báo -->
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">
+                        <i class="fas fa-exclamation-triangle"></i> CẢNH BÁO!
+                    </h4>
+                    <p>
+                        Bạn sắp xóa đơn hàng <strong>@Model.Code</strong> của khách hàng <strong>@Model.CustomerName</strong>.
+                    </p>
+                    <hr>
+                    <p class="mb-0">
+                        <strong>Lưu ý:</strong> Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan sẽ bị xóa vĩnh viễn.
+                    </p>
+                </div>
+
+                <!-- Thông tin đơn hàng chuẩn bị xóa -->
+                <div class="card card-danger">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông Tin Đơn Hàng</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Mã Đơn Hàng:</strong> @Model.Code</p>
+                                <p><strong>Tên Khách Hàng:</strong> @Model.CustomerName</p>
+                                <p><strong>Điện Thoại:</strong> @Model.Phone</p>
+                                <p><strong>Ngày Tạo:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Địa Chỉ:</strong> @Model.Address</p>
+                                <p><strong>Tổng Tiền:</strong> <span class="badge badge-danger">@Model.TotalAmount.ToString("N0") đ</span></p>
+                                <p><strong>Số Lượng:</strong> @Model.Quantity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chi tiết sản phẩm -->
+                @if (Model.OrderDetails != null && Model.OrderDetails.Count() > 0)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Chi Tiết Sản Phẩm Sẽ Bị Xóa</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tên Sản Phẩm</th>
+                                        <th>Giá</th>
+                                        <th>Số Lượng</th>
+                                        <th>Thành Tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int stt = 1;
+                                    }
+                                    @foreach (var detail in Model.OrderDetails)
+                                    {
+                                        decimal lineTotal = detail.Price * detail.Quantity;
+                                        <tr>
+                                            <td>@stt</td>
+                                            <td>@(detail.Product != null ? detail.Product.Title : "Sản phẩm đã xóa")</td>
+                                            <td class="text-right">@detail.Price.ToString("N0") đ</td>
+                                            <td class="text-center">@detail.Quantity</td>
+                                            <td class="text-right">@lineTotal.ToString("N0") đ</td>
+                                        </tr>
+                                        stt++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+
+                <!-- Nút hành động -->
+                <div class="card card-footer" style="border: none;">
+                    @using (Html.BeginForm("Delete", "Order", FormMethod.Post, new { @class = "d-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id">
+
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="fas fa-trash"></i> Xác Nhận Xóa
+                        </button>
+                    }
+
+                    <a href="@Url.Action("Details", new { id = Model.Id })" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-arrow-left"></i> Hủy Bỏ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->

@@ -1,0 +1,151 @@
+﻿<!-- Sidebar Menu -->
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        
+        <!-- Dashboard -->
+        <li class="nav-item">
+            <a href="@Url.Action("Index", "Home")" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
+            </a>
+        </li>
+
+        <!-- Sản Phẩm -->
+        <li class="nav-item has-treeview @(ViewContext.RouteData.Values["Controller"].ToString() == "Product" ? "menu-open" : "")">
+            <a href="#" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "Product" ? "active" : "")">
+                <i class="nav-icon fas fa-cube"></i>
+                <p>
+                    Sản Phẩm
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="@Url.Action("Index", "Product")" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh Sách Sản Phẩm</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Add", "Product")" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm Sản Phẩm</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Danh Mục -->
+        <li class="nav-item">
+            <a href="@Url.Action("Index", "Category")" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "Category" ? "active" : "")">
+                <i class="nav-icon fas fa-list"></i>
+                <p>Danh Mục</p>
+            </a>
+        </li>
+
+        <!-- Đơn Hàng -->
+        <li class="nav-item has-treeview @(ViewContext.RouteData.Values["Controller"].ToString() == "Order" ? "menu-open" : "")">
+            <a href="#" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "Order" ? "active" : "")">
+                <i class="nav-icon fas fa-shopping-cart"></i>
+                <p>
+                    Đơn Hàng
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="@Url.Action("Index", "Order")" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh Sách Đơn Hàng</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Tin Tức -->
+        <li class="nav-item has-treeview @(ViewContext.RouteData.Values["Controller"].ToString() == "News" ? "menu-open" : "")">
+            <a href="#" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "News" ? "active" : "")">
+                <i class="nav-icon fas fa-newspaper"></i>
+                <p>
+                    Tin Tức
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="@Url.Action("Index", "News")" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh Sách Tin Tức</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Create", "News")" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm Tin Tức</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Bài Viết -->
+        <li class="nav-item has-treeview @(ViewContext.RouteData.Values["Controller"].ToString() == "Posts" ? "menu-open" : "")">
+            <a href="#" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "Posts" ? "active" : "")">
+                <i class="nav-icon fas fa-file-alt"></i>
+                <p>
+                    Bài Viết
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="@Url.Action("Index", "Posts")" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh Sách Bài Viết</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Create", "Posts")" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm Bài Viết</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Cài Đặt -->
+        <li class="nav-header">KHÁC</li>
+        
+        <li class="nav-item">
+            <a href="@Url.Action("Index", "Setting")" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "Setting" ? "active" : "")">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>Cài Đặt Hệ Thống</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="@Url.Action("Index", "Home", new { area = "" })" class="nav-link">
+                <i class="nav-icon fas fa-home"></i>
+                <p>Về Trang Chủ</p>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <li class="nav-header">TÀI KHOẢN</li>
+
+        <li class="nav-item">
+            <a href="@Url.Action("NewPassword", "Manage")" class="nav-link">
+                <i class="nav-icon fas fa-lock"></i>
+                <p>Đổi Mật Khẩu</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="@Url.RouteUrl("LogOff")" class="nav-link" style="color: #dc3545;">
+                <i class="nav-icon fas fa-sign-out-alt"></i>
+                <p>Đăng Xuất</p>
+            </a>
+        </li>
+
+    </ul>
+</nav>
+<!-- /.sidebar-menu -->

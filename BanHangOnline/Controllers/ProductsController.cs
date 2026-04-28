@@ -22,5 +22,15 @@ namespace BanHangOnline.Controllers
             var items = db.Products.Where(x => x.IsHome).Take(12).ToList();
             return PartialView("_ItemsByCateId", items);
         }
+
+        public ActionResult Detail(int id)
+        {
+            var product = db.Products.Find(id);
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
+            return View(product);
+        }
     }
 }

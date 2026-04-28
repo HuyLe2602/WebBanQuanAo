@@ -1,0 +1,79 @@
+﻿@model BanHangOnline.Models.EF.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2>Chi tiết đơn hàng</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Thông tin đơn hàng</h4>
+            <table class="table">
+                <tr>
+                    <td><strong>Mã đơn hàng:</strong></td>
+                    <td>@Model.Code</td>
+                </tr>
+                <tr>
+                    <td><strong>Tên khách hàng:</strong></td>
+                    <td>@Model.CustomerName</td>
+                </tr>
+                <tr>
+                    <td><strong>Số điện thoại:</strong></td>
+                    <td>@Model.Phone</td>
+                </tr>
+                <tr>
+                    <td><strong>Địa chỉ giao hàng:</strong></td>
+                    <td>@Model.Address</td>
+                </tr>
+                <tr>
+                    <td><strong>Ngày tạo:</strong></td>
+                    <td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+                <tr>
+                    <td><strong>Tổng số lượng:</strong></td>
+                    <td>@Model.Quantity</td>
+                </tr>
+                <tr>
+                    <td><strong>Tổng tiền:</strong></td>
+                    <td>@Model.TotalAmount VND</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h4>Chi tiết sản phẩm</h4>
+            @if (ViewBag.OrderDetails != null && ((List<BanHangOnline.Models.EF.OrderDetail>)ViewBag.OrderDetails).Count > 0)
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Tổng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detail in (List<BanHangOnline.Models.EF.OrderDetail>)ViewBag.OrderDetails)
+                        {
+                            <tr>
+                                <td>@detail.Product.Title</td>
+                                <td>@detail.Quantity</td>
+                                <td>@detail.Price VND</td>
+                                <td>@(detail.Quantity * detail.Price) VND</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="/Cart/OrderHistory" class="btn btn-secondary">Quay lại lịch sử</a>
+        <a href="/Products/Index" class="btn btn-primary">Tiếp tục mua sắm</a>
+    </div>
+</div>

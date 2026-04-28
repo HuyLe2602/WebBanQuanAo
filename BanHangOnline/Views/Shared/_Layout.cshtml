@@ -90,12 +90,12 @@
                                 <a href="#">colo<span>shop</span></a>
                             </div>
                             <nav class="navbar">
-                                @Html.Action("MenuTop", "Menu", new { area = "Admin" })
+                                @Html.Action("MenuTop", "Menu")
                                 <ul class="navbar_user">
                                     <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
                                     <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
                                     <li class="checkout">
-                                        <a href="#">
+                                        <a href="/Cart/Index">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                             <span id="checkout_items" class="checkout_items">2</span>
                                         </a>
@@ -155,12 +155,13 @@
                             <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                         </ul>
                     </li>
-                    <li class="menu_item"><a href="#">home</a></li>
-                    <li class="menu_item"><a href="#">shop</a></li>
-                    <li class="menu_item"><a href="#">promotion</a></li>
-                    <li class="menu_item"><a href="#">pages</a></li>
-                    <li class="menu_item"><a href="#">blog</a></li>
-                    <li class="menu_item"><a href="#">contact</a></li>
+                    <li class="menu_item"><a href="/">Trang chủ</a></li>
+                    <li class="menu_item"><a href="/Products/Index">Sản phẩm</a></li>
+                    <li class="menu_item"><a href="/Cart/Index">Giỏ hàng</a></li>
+                    <li class="menu_item"><a href="#">Khuyến mãi</a></li>
+                    <li class="menu_item"><a href="#">Trang</a></li>
+                    <li class="menu_item"><a href="/News/Index">Tin tức</a></li>
+                    <li class="menu_item"><a href="#">Liên hệ</a></li>
                 </ul>
             </div>
         </div>

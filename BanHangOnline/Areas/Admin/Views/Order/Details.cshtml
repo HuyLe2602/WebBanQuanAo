@@ -1,0 +1,150 @@
+﻿@model BanHangOnline.Models.EF.Order
+
+@{
+    ViewBag.Title = "Chi tiết Đơn Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Chi tiết Đơn Hàng: <strong>@Model.Code</strong></h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Admin</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Order")">Đơn Hàng</a></li>
+                    <li class="breadcrumb-item active">Chi tiết</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Thông tin đơn hàng -->
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông Tin Đơn Hàng</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Mã Đơn Hàng</label>
+                            <input type="text" class="form-control" value="@Model.Code" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Tên Khách Hàng</label>
+                            <input type="text" class="form-control" value="@Model.CustomerName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Điện Thoại</label>
+                            <input type="text" class="form-control" value="@Model.Phone" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Địa Chỉ Giao Hàng</label>
+                            <textarea class="form-control" rows="3" readonly>@Model.Address</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày Tạo</label>
+                            <input type="text" class="form-control" value="@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tình trạng đơn hàng -->
+            <div class="col-md-6">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Tình Trạng Đơn Hàng</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Tổng Tiền</label>
+                            <input type="text" class="form-control form-control-lg" value="@Model.TotalAmount.ToString("N0") đ" readonly style="font-weight: bold; color: red; font-size: 18px;">
+                        </div>
+                        <div class="form-group">
+                            <label>Số Lượng Sản Phẩm</label>
+                            <input type="text" class="form-control" value="@Model.Quantity" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chi tiết sản phẩm -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Chi Tiết Sản Phẩm</h3>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.OrderDetails != null && Model.OrderDetails.Count() > 0)
+                        {
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tên Sản Phẩm</th>
+                                        <th>Giá</th>
+                                        <th>Số Lượng</th>
+                                        <th>Thành Tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int stt = 1;
+                                        decimal totalPrice = 0;
+                                    }
+                                    @foreach (var detail in Model.OrderDetails)
+                                    {
+                                        decimal lineTotal = detail.Price * detail.Quantity;
+                                        totalPrice += lineTotal;
+                                        <tr>
+                                            <td>@stt</td>
+                                            <td>@(detail.Product != null ? detail.Product.Title : "Sản phẩm đã xóa")</td>
+                                            <td class="text-right">@detail.Price.ToString("N0") đ</td>
+                                            <td class="text-center">@detail.Quantity</td>
+                                            <td class="text-right font-weight-bold">@lineTotal.ToString("N0") đ</td>
+                                        </tr>
+                                        stt++;
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr class="font-weight-bold">
+                                        <td colspan="4" class="text-right">TỔNG CỘNG:</td>
+                                        <td class="text-right" style="color: red; font-size: 16px;">@totalPrice.ToString("N0") đ</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        }
+                        else
+                        {
+                            <p class="text-muted">Không có sản phẩm nào trong đơn hàng</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút hành động -->
+        <div class="row">
+            <div class="col-md-12">
+                <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning btn-lg">
+                    <i class="fas fa-edit"></i> Cập Nhật Trạng Thái
+                </a>
+                <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-arrow-left"></i> Quay Lại
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->

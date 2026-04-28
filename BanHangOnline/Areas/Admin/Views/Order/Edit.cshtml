@@ -1,0 +1,148 @@
+﻿@model BanHangOnline.Models.EF.Order
+
+@{
+    ViewBag.Title = "Cập Nhật Đơn Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Cập Nhật Trạng Thái Đơn Hàng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Admin</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Order")">Đơn Hàng</a></li>
+                    <li class="breadcrumb-item active">Cập Nhật</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông Tin Đơn Hàng: <strong>@Model.Code</strong></h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    @using (Html.BeginForm("Edit", "Order", FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="card-body">
+                            <!-- Thông tin khách hàng (read-only) -->
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Mã Đơn</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Khách Hàng</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Điện Thoại</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Địa Chỉ</label>
+                                <div class="col-sm-10">
+                                    @Html.TextAreaFor(m => m.Address, new { @class = "form-control", @readonly = "readonly", @rows = "3" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Tổng Tiền</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" value="@Model.TotalAmount.ToString("N0") đ" readonly>
+                                </div>
+                            </div>
+
+                            <!-- Dropdown trạng thái -->
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Trạng Thái <span style="color: red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <select name="Status" class="form-control" required>
+                                        <option value="">--- Chọn Trạng Thái ---</option>
+                                        @if (ViewBag.StatusList != null)
+                                        {
+                                            foreach (var status in ViewBag.StatusList)
+                                            {
+                                                <option value="@status.Value" @(status.Value == Model.Id.ToString() ? "selected" : "")>
+                                                    @status.Text
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Ghi Chú</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" rows="4" placeholder="Nhập ghi chú về đơn hàng..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-info btn-lg">
+                                <i class="fas fa-save"></i> Lưu Thay Đổi
+                            </button>
+                            <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times"></i> Hủy
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Card thông tin bên phải -->
+            <div class="col-md-4">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Hướng Dẫn Trạng Thái</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info" role="alert">
+                            <strong>0 - Chờ xử lý:</strong> Đơn hàng vừa được tạo<br>
+                            <strong>1 - Đang xử lý:</strong> Nhân viên đang chuẩn bị hàng<br>
+                            <strong>2 - Đã gửi hàng:</strong> Hàng đã bàn giao cho shipper<br>
+                            <strong>3 - Đã nhận hàng:</strong> Khách đã nhận hàng<br>
+                            <strong>4 - Bị hủy:</strong> Đơn hàng bị hủy
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông Tin Thêm</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Ngày tạo:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</p>
+                        <p><strong>Số lượng sản phẩm:</strong> @Model.Quantity</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->

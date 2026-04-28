@@ -1,0 +1,59 @@
+﻿@model List<BanHangOnline.Models.EF.CartItem>
+
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Thông tin thanh toán</h2>
+            <form action="/Cart/Checkout" method="post">
+                <div class="form-group">
+                    <label for="customerName">Họ tên:</label>
+                    <input type="text" class="form-control" id="customerName" name="customerName" required />
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required />
+                </div>
+                <div class="form-group">
+                    <label for="address">Địa chỉ giao hàng:</label>
+                    <textarea class="form-control" id="address" name="address" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Xác nhận thanh toán</button>
+                <a href="/Cart/Index" class="btn btn-secondary btn-lg">Quay lại</a>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Đơn hàng của bạn</h2>
+            @if (Model != null && Model.Count > 0)
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Tổng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Product.Title</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price VND</td>
+                                <td>@item.Total VND</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <h4>Tổng cộng: <strong>@Model.Sum(x => x.Total) VND</strong></h4>
+            }
+        </div>
+    </div>
+</div>

@@ -59,8 +59,7 @@
                         int i = 1;
                         foreach (var item in Model)
                         {
-                            var img = item.ProductImage?.FirstOrDefault(x => x.IsDefault)?.Image;
-                            var imagePath = string.IsNullOrEmpty(img) ? "/Content/images/no-image.jpg" : img;
+                            var imagePath = string.IsNullOrEmpty(item.Image) ? "/Content/images/no-image.jpg" : item.Image;
 
                             <tr id="row_@item.Id">
                                 <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
@@ -69,7 +68,7 @@
                                 <td>@item.Title</td>
                                 <td>@(item.ProductCategory?.Title ?? "")</td>
                                 <td>@item.Quantity</td>
-                                <td>@BanHangOnline.Common.Common.FormatNumber(item.Price, 0)</td>
+                                <td>@item.Price.ToString("N0") VND</td>
                                 <td>@(item.CreatedDate != null ? item.CreatedDate.ToString("dd/MM/yyyy") : "")</td>
 
                                 <td class="text-center">
@@ -82,7 +81,7 @@
 
                                 <td class="text-center">
                                     <a href="#" class="btnActive" data-id="@item.Id">
-                                        @(item.IsActive
+                                        @(item.IsFeature
                                     ? Html.Raw("<i class='fas fa-check text-success'></i>")
                                     : Html.Raw("<i class='fas fa-times text-danger'></i>"))
                                     </a>

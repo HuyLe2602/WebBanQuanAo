@@ -1,0 +1,35 @@
+﻿@model BanHangOnline.Models.EF.Product
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.Image" alt="@Model.Title" class="img-fluid" />
+        </div>
+        <div class="col-md-6">
+            <h1>@Model.Title</h1>
+            <p>@Model.Description</p>
+            <p><strong>Giá: </strong>@Model.Price VND</p>
+            @if (Model.PriceSale > 0)
+            {
+                <p><strong>Giá khuyến mãi: </strong>@Model.PriceSale VND</p>
+            }
+            <p><strong>Số lượng: </strong>@Model.Quantity</p>
+            <form action="/Cart/AddToCart" method="post" style="display: inline;">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <input type="number" name="quantity" value="1" min="1" style="width: 60px;" />
+                <button type="submit" class="btn btn-primary">Thêm vào giỏ hàng</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>Chi tiết sản phẩm</h3>
+            @Html.Raw(Model.Detail)
+        </div>
+    </div>
+</div>

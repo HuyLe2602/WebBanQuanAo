@@ -1,0 +1,61 @@
+﻿@model BanHangOnline.Models.EF.Order
+
+@{
+    ViewBag.Title = "Xác nhận đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-success text-center" role="alert">
+        <h2>✓ Đặt hàng thành công!</h2>
+        <p>Cảm ơn bạn đã mua hàng. Chúng tôi sẽ sớm gửi hàng cho bạn.</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Thông tin đơn hàng</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <td><strong>Mã đơn hàng:</strong></td>
+                            <td>@Model.Code</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tên khách hàng:</strong></td>
+                            <td>@Model.CustomerName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Số điện thoại:</strong></td>
+                            <td>@Model.Phone</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Địa chỉ giao hàng:</strong></td>
+                            <td>@Model.Address</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ngày đặt hàng:</strong></td>
+                            <td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tổng số lượng:</strong></td>
+                            <td>@Model.Quantity</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="font-size: 18px;">Tổng tiền:</strong></td>
+                            <td><strong style="font-size: 18px; color: red;">@Model.TotalAmount VND</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a href="/Cart/OrderDetail/@Model.Id" class="btn btn-info btn-lg">Xem chi tiết</a>
+                <a href="/Cart/OrderHistory" class="btn btn-secondary btn-lg">Lịch sử đơn hàng</a>
+                <a href="/Products/Index" class="btn btn-primary btn-lg">Tiếp tục mua sắm</a>
+            </div>
+        </div>
+    </div>
+</div>

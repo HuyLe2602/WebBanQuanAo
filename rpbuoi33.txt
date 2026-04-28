@@ -1,0 +1,13 @@
+1.Làm Được:
+-Chi tiết sản phẩm
+
+-Chức năng giỏ hang
+
+2.Chưa làm được:
+-Quản lý đơn hàng
+
+-Cấu hình hệ thống trang chủ
+
+-Các mục phần News
+
+-Cách liên kết các trang web với nhau 
