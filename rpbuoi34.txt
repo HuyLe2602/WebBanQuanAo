@@ -1,0 +1,9 @@
+1.Làm Được:
+Demo Đồ Án Thực Tập
+
+2.Chưa làm được:
+-Quản lý đơn hàng
+
+-Các mục phần News
+
+-Cách liên kết các trang web với nhau 
