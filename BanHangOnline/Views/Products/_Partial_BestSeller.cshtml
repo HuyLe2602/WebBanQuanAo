@@ -1,0 +1,39 @@
+﻿@model IEnumerable<BanHangOnline.Models.EF.Product>
+
+<div class="product-grid">
+
+    @foreach (var item in Model)
+    {
+        <div class="product-item">
+            <div class="product">
+
+                <!-- IMAGE -->
+                <div class="product_image">
+                    <a href="@Url.Action("Detail","Products", new { id = item.Id })">
+                        <img src="@item.Image" alt="@item.Title" />
+                    </a>
+                </div>
+
+                <!-- INFO -->
+                <div class="product_info">
+                    <h6 class="product_name">
+                        <a href="@Url.Action("Detail","Products", new { id = item.Id })">
+                            @item.Title
+                        </a>
+                    </h6>
+
+                    <div class="product_price">
+                        @item.Price.ToString("N0") đ
+                    </div>
+                </div>
+
+                <!-- ADD TO CART -->
+                <div class="red_button add_to_cart_button">
+                    <a href="#" onclick="addToCart(@item.Id)">Thêm vào giỏ</a>
+                </div>
+
+            </div>
+        </div>
+    }
+
+</div>

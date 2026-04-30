@@ -1,0 +1,56 @@
+﻿@model BanHangOnline.Models.EF.Product
+
+@{
+    ViewBag.Title = "Thêm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thêm sản phẩm</h2>
+
+@using (Html.BeginForm("Create", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label>Tên sản phẩm</label>
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Danh mục sản phẩm</label>
+        @Html.DropDownList("ProductCategoryId", null, "-- Chọn danh mục --", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Giá</label>
+        @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Giá khuyến mãi</label>
+        @Html.TextBoxFor(m => m.PriceSale, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Số lượng</label>
+        @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Mô tả ngắn</label>
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 4 })
+    </div>
+
+    <div class="form-group">
+        <label>Chi tiết sản phẩm</label>
+        @Html.TextAreaFor(m => m.Detail, new { @class = "form-control", rows = 6 })
+    </div>
+
+    <div class="form-group">
+        <label>Ảnh sản phẩm</label>
+        <input type="file" name="uploadImage" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu sản phẩm</button>
+    <a href="@Url.Action("Index")" class="btn btn-default">Quay lại</a>
+}

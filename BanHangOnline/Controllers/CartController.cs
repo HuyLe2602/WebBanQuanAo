@@ -1,10 +1,9 @@
-﻿using BanHangOnline.Models.EF;
+﻿using BanHangOnline.Models;
+using BanHangOnline.Models.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using BanHangOnline.Models;
 
 namespace BanHangOnline.Controllers
 {
@@ -12,18 +11,42 @@ namespace BanHangOnline.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // Thêm sản phẩm vào giỏ
+        // =============================
+        // LẤY GIỎ HÀNG
+        // =============================
+        private List<CartItem> GetCart()
+        {
+            if (Session["Cart"] == null)
+            {
+                Session["Cart"] = new List<CartItem>();
+            }
+            return (List<CartItem>)Session["Cart"];
+        }
+
+        // =============================
+        // LƯU GIỎ HÀNG
+        // =============================
+        private void SaveCart(List<CartItem> cart)
+        {
+            Session["Cart"] = cart;
+        }
+
+        // =============================
+        // THÊM VÀO GIỎ (AJAX)
+        // =============================
         [HttpPost]
-        public ActionResult AddToCart(int productId, int quantity = 1)
+        [ValidateAntiForgeryToken]
+        public JsonResult AddToCart(int productId, int quantity = 1, string size = "M")
         {
             var product = db.Products.Find(productId);
             if (product == null)
             {
-                return HttpNotFound();
+                return Json(new { success = false, message = "Sản phẩm không tồn tại" });
             }
 
-            var cart = Session["Cart"] as List<CartItem> ?? new List<CartItem>();
-            var existingItem = cart.FirstOrDefault(x => x.ProductId == productId);
+            var cart = GetCart();
+
+            var existingItem = cart.FirstOrDefault(x => x.ProductId == productId && x.Size == size);
 
             if (existingItem != null)
             {
@@ -31,85 +54,123 @@ namespace BanHangOnline.Controllers
             }
             else
             {
-                // Sử dụng giá khuyến mãi nếu có, không thì dùng giá gốc
                 decimal price = product.PriceSale > 0 ? product.PriceSale : product.Price;
-                cart.Add(new CartItem(productId, quantity, price, product));
+
+                cart.Add(new CartItem
+                {
+                    ProductId = productId,
+                    ProductName = product.Title,
+                    Image = product.Image,
+                    Quantity = quantity,
+                    Price = price,
+                    Size = size
+                });
             }
 
-            Session["Cart"] = cart;
-            
-            // Quay lại trang mà user vừa ở
-            if (Request.UrlReferrer != null)
+            SaveCart(cart);
+
+            return Json(new
             {
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-            return RedirectToAction("Index");
+                success = true,
+                count = cart.Sum(x => x.Quantity)
+            });
         }
 
-        // Hiển thị giỏ hàng
+        // =============================
+        // ĐẾM SỐ LƯỢNG GIỎ
+        // =============================
+        public JsonResult GetCartCount()
+        {
+            var cart = GetCart();
+            return Json(cart.Sum(x => x.Quantity), JsonRequestBehavior.AllowGet);
+        }
+
+        // =============================
+        // HIỂN THỊ GIỎ HÀNG
+        // =============================
         public ActionResult Index()
         {
-            var cart = Session["Cart"] as List<CartItem> ?? new List<CartItem>();
-            return View(cart);
+            return View(GetCart());
         }
 
-        // Xóa sản phẩm khỏi giỏ
-        public ActionResult Remove(int productId)
+        // =============================
+        // XÓA (AJAX)
+        // =============================
+        public JsonResult Remove(int productId, string size)
         {
-            var cart = Session["Cart"] as List<CartItem> ?? new List<CartItem>();
-            var item = cart.FirstOrDefault(x => x.ProductId == productId);
+            var cart = GetCart();
+
+            var item = cart.FirstOrDefault(x => x.ProductId == productId && x.Size == size);
             if (item != null)
             {
                 cart.Remove(item);
+                SaveCart(cart);
             }
-            Session["Cart"] = cart;
-            return RedirectToAction("Index");
+
+            return Json(new
+            {
+                success = true,
+                count = cart.Sum(x => x.Quantity)
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        // Cập nhật số lượng
+        // =============================
+        // UPDATE (AJAX)
+        // =============================
         [HttpPost]
-        public ActionResult Update(int productId, int quantity)
+        public JsonResult Update(int productId, string size, int quantity)
         {
-            if (quantity <= 0)
-            {
-                return RedirectToAction("Remove", new { productId = productId });
-            }
+            var cart = GetCart();
 
-            var cart = Session["Cart"] as List<CartItem> ?? new List<CartItem>();
-            var item = cart.FirstOrDefault(x => x.ProductId == productId);
+            var item = cart.FirstOrDefault(x => x.ProductId == productId && x.Size == size);
+
             if (item != null)
             {
-                item.Quantity = quantity;
+                if (quantity <= 0)
+                    cart.Remove(item);
+                else
+                    item.Quantity = quantity;
+
+                SaveCart(cart);
             }
-            Session["Cart"] = cart;
-            return RedirectToAction("Index");
+
+            return Json(new
+            {
+                success = true,
+                total = cart.Sum(x => x.Price * x.Quantity),
+                count = cart.Sum(x => x.Quantity)
+            });
         }
 
-        // Checkout
+        // =============================
+        // CHECKOUT (GET)
+        // =============================
         public ActionResult Checkout()
         {
-            var cart = Session["Cart"] as List<CartItem> ?? new List<CartItem>();
+            var cart = GetCart();
             if (!cart.Any())
-            {
                 return RedirectToAction("Index");
-            }
+
             return View(cart);
         }
 
+        // =============================
+        // CHECKOUT (AJAX)
+        // =============================
         [HttpPost]
-        public ActionResult Checkout(string customerName, string phone, string address)
+        [ValidateAntiForgeryToken]
+        public JsonResult Checkout(string customerName, string phone, string address, string paymentMethod)
         {
-            var cart = Session["Cart"] as List<CartItem> ?? new List<CartItem>();
-            
-            if (!cart.Any())
-            {
-                return RedirectToAction("Index");
-            }
+            var cart = GetCart();
 
-            if (string.IsNullOrEmpty(customerName) || string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(address))
+            if (!cart.Any())
+                return Json(new { success = false, message = "Giỏ hàng trống" });
+
+            if (string.IsNullOrWhiteSpace(customerName) ||
+                string.IsNullOrWhiteSpace(phone) ||
+                string.IsNullOrWhiteSpace(address))
             {
-                ViewBag.Error = "Vui lòng điền đầy đủ thông tin";
-                return View(cart);
+                return Json(new { success = false, message = "Vui lòng nhập đầy đủ thông tin" });
             }
 
             try
@@ -120,7 +181,7 @@ namespace BanHangOnline.Controllers
                     CustomerName = customerName,
                     Phone = phone,
                     Address = address,
-                    TotalAmount = Convert.ToDecimal(cart.Sum(x => x.Total)),
+                    TotalAmount = cart.Sum(x => x.Price * x.Quantity),
                     Quantity = cart.Sum(x => x.Quantity),
                     CreatedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now
@@ -131,57 +192,74 @@ namespace BanHangOnline.Controllers
 
                 foreach (var item in cart)
                 {
-                    var orderDetail = new OrderDetail
+                    db.OrderDetails.Add(new OrderDetail
                     {
                         OrderId = order.Id,
                         ProductId = item.ProductId,
-                        Price = Convert.ToDecimal(item.Price),
+                        Price = item.Price,
                         Quantity = item.Quantity,
                         CreatedDate = DateTime.Now,
                         ModifiedDate = DateTime.Now
-                    };
-                    db.OrderDetails.Add(orderDetail);
+                    });
                 }
+
                 db.SaveChanges();
 
-                Session["Cart"] = null; // Xóa giỏ sau checkout
-                return RedirectToAction("OrderSuccess", new { id = order.Id });
+                // clear cart
+                Session["Cart"] = null;
+
+                return Json(new
+                {
+                    success = true,
+                    orderId = order.Id
+                });
             }
             catch (Exception ex)
             {
-                ViewBag.Error = "Có lỗi xảy ra: " + ex.Message;
-                return View(cart);
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
             }
         }
 
+        // =============================
+        // THÀNH CÔNG
+        // =============================
         public ActionResult OrderSuccess(int id)
         {
             var order = db.Orders.Find(id);
             if (order == null)
-            {
                 return HttpNotFound();
-            }
+
             return View(order);
         }
 
-        // Chi tiết đơn hàng
+        // =============================
+        // CHI TIẾT ĐƠN
+        // =============================
         public ActionResult OrderDetail(int id)
         {
             var order = db.Orders.Find(id);
             if (order == null)
-            {
                 return HttpNotFound();
-            }
-            var orderDetails = db.OrderDetails.Where(x => x.OrderId == id).ToList();
-            ViewBag.OrderDetails = orderDetails;
+
+            ViewBag.OrderDetails = db.OrderDetails
+                                     .Where(x => x.OrderId == id)
+                                     .ToList();
+
             return View(order);
         }
 
-        // Lịch sử đơn hàng
+        // =============================
+        // LỊCH SỬ
+        // =============================
         public ActionResult OrderHistory()
         {
-            var orders = db.Orders.OrderByDescending(x => x.CreatedDate).ToList();
-            return View(orders);
+            return View(db.Orders
+                          .OrderByDescending(x => x.CreatedDate)
+                          .ToList());
         }
     }
 }

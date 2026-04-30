@@ -1,0 +1,35 @@
+﻿@model IEnumerable<BanHangOnline.Models.EF.News>
+
+@{
+    ViewBag.Title = "Tin tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Tin tức - Bài viết</h2>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="@item.Image" class="card-img-top" alt="@item.Title" style="height:220px; object-fit:cover;" />
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="/tin-tuc/@item.Alias-n@(item.Id)" style="text-decoration:none;">
+                                    @item.Title
+                                </a>
+                            </h5>
+                            <p class="card-text">@item.Description</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">@item.CreatedDate.ToString("dd/MM/yyyy")</small>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

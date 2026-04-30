@@ -1,22 +1,51 @@
 ﻿@using Microsoft.AspNet.Identity
+
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
-
-    <ul class="navbar-nav navbar-right">
+    <ul class="account_selection">
         <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class="nav-link" })
+            <a href="#">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                Xin chào @User.Identity.GetUserName()
+            </a>
         </li>
-        <li><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <li>
+                <a href="/Admin/Home">
+                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                    Quản trị
+                </a>
+            </li>
+        }
+
+        <li>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <a href="javascript:document.getElementById('logoutForm').submit()">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    Đăng xuất
+                </a>
+            }
+        </li>
     </ul>
-    }
 }
 else
 {
-    <ul class="navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class="nav-link" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class="nav-link" })</li>
+    <ul class="account_selection">
+        <li>
+            <a href="@Url.Action("Login", "Account")">
+                <i class="fa fa-sign-in" aria-hidden="true"></i>
+                Đăng nhập
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Register", "Account")">
+                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                Đăng ký
+            </a>
+        </li>
     </ul>
 }

@@ -1,0 +1,11 @@
+1. Đã Làm được:
+Hoàn Thành Trang Web:
+
+-News các chức năng xoá sửa edit
+
+-Giỏ Hàng và Trang Thanh Toán
+
+-Các Trang web liên kết với nhau bang route và them ajax
+
+2.Chưa làm được:
+Báo Cáo Thực Tập

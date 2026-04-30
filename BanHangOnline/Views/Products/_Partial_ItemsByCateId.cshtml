@@ -1,0 +1,101 @@
+﻿@model IEnumerable<BanHangOnline.Models.EF.Product>
+@using System.Linq
+
+@Html.AntiForgeryToken()
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        var strImage = !string.IsNullOrEmpty(item.Image) ? Url.Content(item.Image) : "/Content/images/no-image.png";
+        var categoryAlias = item.ProductCategory != null ? item.ProductCategory.Alias : "";
+        var discount = item.PriceSale > 0 ? (item.Price - item.PriceSale) : 0;
+
+        <div class="product-item @categoryAlias">
+            <div class="product product_filter">
+
+                <!-- CLICK -->
+                <a href="@Url.Action("Detail", "Products", new { id = item.Id, alias = item.Alias })">
+
+                    <div class="product_image">
+                        <img src="@strImage" alt="@item.Title" />
+                    </div>
+
+                    <div class="favorite favorite_left"></div>
+
+                    @if (item.PriceSale > 0)
+                    {
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                            <span>-@discount.ToString("N0")</span>
+                        </div>
+                    }
+
+                    <div class="product_info">
+                        <h6 class="product_name">@item.Title</h6>
+
+                        @if (item.PriceSale > 0)
+                        {
+                            <div class="product_price">
+                                @item.PriceSale.ToString("N0") đ
+                                <span>@item.Price.ToString("N0") đ</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="product_price">
+                                @item.Price.ToString("N0") đ
+                            </div>
+                        }
+                    </div>
+
+                </a>
+            </div>
+
+            <!-- AJAX ADD TO CART -->
+            <div class="red_button add_to_cart_button">
+                <button class="add-to-cart"
+                        data-id="@item.Id"
+                        style="background:none; border:none; color:inherit; cursor:pointer; width:100%;">
+                    Thêm vào giỏ
+                </button>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="col-12 text-center">
+        <p>Không có sản phẩm</p>
+    </div>
+}
+
+<!-- AJAX SCRIPT -->
+<script>
+    $(document).ready(function () {
+
+        $(document).on("click", ".add-to-cart", function (e) {
+            e.preventDefault();
+
+            var productId = $(this).data("id");
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: '/Cart/AddToCart',
+                type: 'POST',
+                data: {
+                    productId: productId,
+                    quantity: 1,
+                    size: "M",
+                    __RequestVerificationToken: token
+                },
+                success: function () {
+                    alert("✔ Đã thêm vào giỏ hàng");
+                },
+                error: function () {
+                    alert("❌ Lỗi thêm giỏ hàng");
+                }
+            });
+        });
+
+    });
+</script>

@@ -1,0 +1,36 @@
+﻿@model BanHangOnline.Models.EF.Product
+
+@{
+    ViewBag.Title = "Xóa sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Xóa sản phẩm</h2>
+
+<div class="alert alert-danger">
+    <h4>Bạn có chắc muốn xóa sản phẩm này?</h4>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <p><strong>Tên sản phẩm:</strong> @Model.Title</p>
+        <p><strong>Danh mục:</strong> @(Model.ProductCategory != null ? Model.ProductCategory.Title : "")</p>
+        <p><strong>Giá:</strong> @Model.Price</p>
+        <p><strong>Số lượng:</strong> @Model.Quantity</p>
+
+        @if (!string.IsNullOrEmpty(Model.Image))
+        {
+            <p><strong>Ảnh:</strong></p>
+            <img src="@Model.Image" width="150" />
+        }
+    </div>
+</div>
+
+@using (Html.BeginForm("Delete", "Products", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a href="@Url.Action("Index")" class="btn btn-default">Hủy</a>
+}

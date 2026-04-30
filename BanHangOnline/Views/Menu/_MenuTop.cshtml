@@ -1,11 +1,23 @@
 ﻿@model IEnumerable<BanHangOnline.Models.EF.Category>
 
-@if (Model != null && Model.Any())
-{
-    <ul class="navbar_menu">
-        @foreach (var item in Model)
+<ul class="navbar_menu">
+    <li>
+        <a href="/trang-chu">Trang chủ</a>
+    </li>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
         {
-            <li><a href="@Url.Content("~/" + item.Alias)">@item.Title</a></li>
+            <li>
+                <a href="/@item.Alias">
+                    @item.Title
+                </a>
+            </li>
         }
-    </ul>
-}
+    }
+
+    <li>
+        <a href="/tin-tuc">Tin tức</a>
+    </li>
+</ul>

@@ -5,54 +5,107 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
-    <h2>Giỏ hàng của bạn</h2>
-    
-    @if (Model == null || Model.Count == 0)
+<div class="container mt-5 mb-5">
+    <h2 class="mb-4">🛒 Giỏ hàng của bạn</h2>
+
+    @if (Model == null || !Model.Any())
     {
-        <p>Giỏ hàng trống. <a href="/Products/Index">Tiếp tục mua sắm</a></p>
+        <div class="alert alert-info">
+            Giỏ hàng trống.
+            <a href="@Url.Action("Index","Home")">Tiếp tục mua sắm</a>
+        </div>
     }
     else
     {
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Hình ảnh</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Giá</th>
-                    <th>Số lượng</th>
-                    <th>Tổng tiền</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center">
+                <thead class="thead-dark">
                     <tr>
-                        <td><img src="@item.Product.Image" alt="@item.Product.Title" style="width: 50px;" /></td>
-                        <td>@item.Product.Title</td>
-                        <td>@item.Price VND</td>
-                        <td>
-                            <form action="/Cart/Update" method="post" style="display: inline;">
-                                <input type="hidden" name="productId" value="@item.ProductId" />
-                                <input type="number" name="quantity" value="@item.Quantity" min="1" style="width: 60px;" />
-                                <button type="submit" class="btn btn-sm btn-success">Cập nhật</button>
-                            </form>
-                        </td>
-                        <td>@item.Total VND</td>
-                        <td><a href="/Cart/Remove/@item.ProductId" class="btn btn-sm btn-danger">Xóa</a></td>
+                        <th>Ảnh</th>
+                        <th>Sản phẩm</th>
+                        <th>Size</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
+                        <th>Xóa</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
 
-        <div class="row mt-4">
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
-                <h4>Tổng tiền giỏ hàng: <strong>@Model.Sum(x => x.Total) VND</strong></h4>
-                <a href="/Cart/Checkout" class="btn btn-primary btn-lg">Tiến hành thanh toán</a>
-                <a href="/Products/Index" class="btn btn-secondary btn-lg">Tiếp tục mua sắm</a>
-            </div>
+                <tbody id="cart-body">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><img src="@item.Image" style="width:60px;" /></td>
+                            <td>@item.ProductName</td>
+                            <td>@item.Size</td>
+                            <td>@item.Price.ToString("N0") đ</td>
+
+                            <td>
+                                <input type="number" class="form-control qty"
+                                       data-id="@item.ProductId"
+                                       data-size="@item.Size"
+                                       value="@item.Quantity" min="1"
+                                       style="width:80px;margin:auto;" />
+                            </td>
+
+                            <td>@(item.Price * item.Quantity).ToString("N0") đ</td>
+
+                            <td>
+                                <button class="btn btn-danger btn-sm remove"
+                                        data-id="@item.ProductId"
+                                        data-size="@item.Size">
+                                    X
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-right mt-4">
+            <h4 class="text-danger">
+                Tổng tiền: <span id="total">
+                    @Model.Sum(x => x.Price * x.Quantity).ToString("N0")
+                </span> đ
+            </h4>
+
+            <a href="@Url.Action("Checkout","Cart")"
+               class="btn btn-success btn-lg mt-2">
+                Thanh toán
+            </a>
         </div>
     }
 </div>
+
+@section scripts{
+<script>
+    // UPDATE QUANTITY
+    $(".qty").change(function () {
+        var id = $(this).data("id");
+        var size = $(this).data("size");
+        var qty = $(this).val();
+
+        $.post('/Cart/Update', {
+            productId: id,
+            size: size,
+            quantity: qty
+        }, function () {
+            location.reload();
+        });
+    });
+
+    // REMOVE
+    $(".remove").click(function () {
+        var id = $(this).data("id");
+        var size = $(this).data("size");
+
+        $.get('/Cart/Remove', {
+            productId: id,
+            size: size
+        }, function () {
+            location.reload();
+        });
+    });
+</script>
+}

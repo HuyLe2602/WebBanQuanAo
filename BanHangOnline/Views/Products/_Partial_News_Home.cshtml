@@ -1,0 +1,31 @@
+﻿@model IEnumerable<BanHangOnline.Models.EF.News>
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="blog_item">
+
+                <div class="blog_background"
+                     style="background-image:url('@item.Image')">
+                </div>
+
+                <div class="blog_content d-flex flex-column align-items-center justify-content-center text-center">
+                    <h5 class="blog_title">@item.Title</h5>
+
+                    <span class="blog_meta">
+                        @item.CreatedDate.ToString("dd/MM/yyyy")
+                    </span>
+
+                    <a href="@Url.Action("Detail","News", new { id = item.Id })"
+                       class="blog_more">
+                        Xem thêm
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    }
+
+</div>

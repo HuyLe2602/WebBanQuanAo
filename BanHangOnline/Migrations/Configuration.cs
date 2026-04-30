@@ -1,27 +1,60 @@
 ﻿namespace BanHangOnline.Migrations
 {
-    using System;
-    using System.Data.Entity;
+    using BanHangOnline.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<BanHangOnline.Models.ApplicationDbContext>
+    internal sealed class Configuration
+        : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
-            // Enable automatic migrations so the database schema is updated to match the model.
-            // If you prefer explicit code-based migrations, set this to false and run Add-Migration / Update-Database instead.
             AutomaticMigrationsEnabled = true;
-            // Allow automatic migrations that may result in data loss (use with caution in production).
             AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(BanHangOnline.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            var roleManager =
+                new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(context));
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
-            //  to avoid creating duplicate seed data.
+            var userManager =
+                new UserManager<ApplicationUser>(
+                    new UserStore<ApplicationUser>(context));
+
+            // Role Admin
+            if (!roleManager.RoleExists("Admin"))
+            {
+                roleManager.Create(new IdentityRole("Admin"));
+            }
+
+            // Role Customer
+            if (!roleManager.RoleExists("Customer"))
+            {
+                roleManager.Create(new IdentityRole("Customer"));
+            }
+
+            // Create admin account
+            if (!context.Users.Any(x => x.Email == "admin@gmail.com"))
+            {
+                var admin = new ApplicationUser
+                {
+                    UserName = "admin@gmail.com",
+                    Email = "admin@gmail.com",
+                    FullName = "Administrator",
+                    Phone = "0123456789"
+                };
+
+                var result = userManager.Create(admin, "Admin@123");
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRole(admin.Id, "Admin");
+                }
+            }
         }
     }
 }

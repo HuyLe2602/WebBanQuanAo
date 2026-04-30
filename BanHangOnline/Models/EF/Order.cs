@@ -30,6 +30,8 @@ namespace BanHangOnline.Models.EF
         public decimal TotalAmount { get; set; }
 
         public int Quantity { get; set; }
+        
+        public string PaymentMethod { get; set; }
 
         public ICollection<OrderDetail> OrderDetails { get; set; }
     }

@@ -32,7 +32,7 @@ namespace BanHangOnline.Models.EF
 
         public int PriceSale { get; set; }
 
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
 
         public bool IsHome { get; set; }
 
@@ -41,8 +41,10 @@ namespace BanHangOnline.Models.EF
         public bool IsFeature { get; set; }
 
         public bool IsHot { get; set; }
+        
+        public bool IsActive { get; set; }
 
-        public string ProductCategoryId { get; set; }
+        public int ProductCategoryId { get; set; }
 
         public string SeoTitle { get; set; }
 

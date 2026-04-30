@@ -1,132 +1,119 @@
 ﻿using BanHangOnline.Models;
+using BanHangOnline.Models.Common;
 using BanHangOnline.Models.EF;
 using System;
-using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
+using System.Net;
 using System.Web.Mvc;
 
 namespace BanHangOnline.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class NewsController : Controller
-    {   
+    {
         private ApplicationDbContext db = new ApplicationDbContext();
+
         // GET: Admin/News
-        public ActionResult Index(int? page)
+        public ActionResult Index()
         {
-            const int pageSize = 10;
-            int pageNumber = page ?? 1;
-
-            var totalCount = db.News.Count();
-            var items = db.News.OrderByDescending(x => x.Id)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-
-            ViewBag.CurrentPage = pageNumber;
-            ViewBag.PageSize = pageSize;
-            ViewBag.TotalCount = totalCount;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-
+            var items = db.News.OrderByDescending(x => x.CreatedDate).ToList();
             return View(items);
         }
 
-        public ActionResult Add() {
+        // GET: Admin/News/Add
+        public ActionResult Add()
+        {
             return View();
         }
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                // Bad request when id not supplied
-                return new HttpStatusCodeResult(400);
-            }
-            var item = db.News.Find(id.Value);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-            return View(item);
-        }
 
+        // POST: Admin/News/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add( News model)
+        [ValidateInput(false)]
+        public ActionResult Add(News model)
         {
             if (ModelState.IsValid)
             {
-                // Ensure required fields exist (Title is used to build Alias)
-                if (string.IsNullOrWhiteSpace(model.Title))
-                {
-                    ModelState.AddModelError("Title", "Tiêu đề không được để trống");
-                    return View(model);
-                }
-
-                if (model != null)
-                {
-                    var now = System.DateTime.Now;
-                    NewMethod(model, now);
-                }
                 model.Alias = BanHangOnline.Models.Common.Filter.FilterChar(model.Title);
-                // ensure defaults
-                model.IsActive = model.IsActive;
-                model.IsFeatured = model.IsFeatured;
-                model.Settings = model.Settings;
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
+
                 db.News.Add(model);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
+
             return View(model);
         }
 
-        [HttpPost]
-[ValidateAntiForgeryToken]
-public ActionResult Edit(News model)
-{
-    if (ModelState.IsValid)
-    {
-        model.ModifiedDate = DateTime.Now;
-        model.Alias = BanHangOnline.Models.Common.Filter.FilterChar(model.Title);
-        // update existing entity
-        var existing = db.News.Find(model.Id);
-        if (existing == null) return HttpNotFound();
-        existing.Title = model.Title;
-        existing.Image = model.Image;
-        existing.Description = model.Description;
-        existing.Detail = model.Detail;
-        existing.SeoTitle = model.SeoTitle;
-        existing.SeoDescription = model.SeoDescription;
-        existing.SeoKeywords = model.SeoKeywords;
-        existing.Alias = model.Alias;
-        existing.IsActive = model.IsActive;
-        existing.IsFeatured = model.IsFeatured;
-        existing.Settings = model.Settings;
-        existing.ModifiedDate = model.ModifiedDate;
-        db.Entry(existing).State = System.Data.Entity.EntityState.Modified;
-        db.SaveChanges();
-        return RedirectToAction("Index");
-    }
-
-    return View(model);
-}
-
-
-        private static void NewMethod(News model, DateTime now)
+        // GET: Admin/News/Edit/5
+        public ActionResult Edit(int? id)
         {
-            model.CreatedDate = now;
-            model.ModifiedDate = now;
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var item = db.News.Find(id);
+            if (item == null)
+                return HttpNotFound();
+
+            return View(item);
+        }
+
+        // POST: Admin/News/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public ActionResult Edit(News model)
+        {
+            if (ModelState.IsValid)
+            {
+                var item = db.News.Find(model.Id);
+                if (item == null)
+                    return HttpNotFound();
+
+                item.Title = model.Title;
+                model.Alias = BanHangOnline.Models.Common.Filter.FilterChar(model.Title);
+                item.Description = model.Description;
+                item.Detail = model.Detail;
+                item.Image = model.Image;
+                item.IsActive = model.IsActive;
+                item.IsHome = model.IsHome;
+                item.IsHot = model.IsHot;
+                item.Position = model.Position;
+                item.ModifiedDate = DateTime.Now;
+
+                db.Entry(item).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        // GET: Admin/News/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var item = db.News.Find(id);
+            if (item == null)
+                return HttpNotFound();
+
+            return View(item);
         }
 
         // POST: Admin/News/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
             var item = db.News.Find(id);
             if (item == null)
-            {
                 return HttpNotFound();
-            }
 
             db.News.Remove(item);
             db.SaveChanges();
@@ -134,24 +121,13 @@ public ActionResult Edit(News model)
             return RedirectToAction("Index");
         }
 
-        // POST: Admin/News/DeleteMultiple
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteMultiple(int[] ids)
+        protected override void Dispose(bool disposing)
         {
-            if (ids == null || ids.Length == 0)
+            if (disposing)
             {
-                return new HttpStatusCodeResult(400, "No ids provided");
+                db.Dispose();
             }
-
-            var items = db.News.Where(x => ids.Contains(x.Id)).ToList();
-            if (items.Any())
-            {
-                db.News.RemoveRange(items);
-                db.SaveChanges();
-            }
-
-            return new HttpStatusCodeResult(200);
+            base.Dispose(disposing);
         }
     }
 }

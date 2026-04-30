@@ -173,14 +173,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdvertisementsController.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\PostsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SeedController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -202,6 +205,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Advertisement.cs" />
     <Compile Include="Models\CommonAbstract.cs" />
     <Compile Include="Models\Common\Enums.cs" />
     <Compile Include="Models\Common\Filter.cs" />
@@ -218,16 +222,22 @@
     <Compile Include="Models\EF\ProductImage.cs" />
     <Compile Include="Models\EF\Subscribe.cs" />
     <Compile Include="Models\EF\SystemSetting.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Views\Advertisements\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Advertisements\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Advertisements\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Advertisements\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\News\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminMenu.cshtml" />
     <Content Include="Content\assets\images\banner_1.jpg" />
     <Content Include="Content\assets\images\banner_2.jpg" />
@@ -3199,7 +3209,7 @@
     <Content Include="Content\ckfinder\plugins\fileeditor\codemirror\LICENSE" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Products\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\Create.cshtml" />
     <Content Include="Content\assets\plugins\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\assets\plugins\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\assets\plugins\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
@@ -3252,7 +3262,13 @@
     <Content Include="Views\Cart\OderDetail.cshtml" />
     <Content Include="Views\Cart\OderHistory.cshtml" />
     <Content Include="Views\Cart\OrderSuccess.cshtml" />
+    <Content Include="Views\News\Detail.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\News\Partial_News_Home.cshtml" />
     <Content Include="Views\Products\Detail.cshtml" />
+    <Content Include="Views\Products\ProductCategory.cshtml" />
+    <Content Include="Views\Products\_Partial_BestSeller.cshtml" />
+    <Content Include="Views\Products\_Partial_News_Home.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -3294,12 +3310,13 @@
     <Content Include="Views\Menu\_MenuArrivals.cshtml" />
     <Content Include="Views\Menu\_MenuProductCategory.cshtml" />
     <Content Include="Views\Menu\_MenuTop.cshtml" />
-    <Content Include="Views\Products\_ItemsByCateId.cshtml" />
+    <Content Include="Views\Products\_Partial_ItemsByCateId.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Content\ckfinder\userfiles\" />
+    <Folder Include="Uploads\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

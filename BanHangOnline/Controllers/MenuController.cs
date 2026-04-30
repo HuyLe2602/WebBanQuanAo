@@ -1,39 +1,56 @@
-﻿using BanHangOnline.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
+using BanHangOnline.Models;
 
 namespace BanHangOnline.Controllers
 {
     public class MenuController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        // GET: Admin/Menu
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        public ActionResult MenuTop()
-        {
-            var items = db.Categories.ToList();
-            return PartialView("_MenuTop", items);
-        }
-
+        // Menu danh mục ở banner trang chủ
         public ActionResult MenuProductCategory()
         {
-            // Use ProductCategories for product-category specific partial view
-            var items = db.ProductCategories.ToList();
-            // Use the partial view with leading underscore
+            var items = db.ProductCategories
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.Position)
+                .Take(3)
+                .ToList();
+
             return PartialView("_MenuProductCategory", items);
         }
 
+        // Menu filter New Arrivals
         public ActionResult MenuArrivals()
         {
-            var items = db.Categories.ToList();
+            var items = db.ProductCategories
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.Position)
+                .ToList();
+
             return PartialView("_MenuArrivals", items);
+        }
+
+        // Menu top
+        public ActionResult MenuTop()
+        {
+            var items = db.Categories
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.Position)
+                .ToList();
+
+            return PartialView("_MenuTop", items);
+        }
+
+        // Menu bottom
+        public ActionResult MenuBottom()
+        {
+            var items = db.Categories
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.Position)
+                .ToList();
+
+            return PartialView("_MenuBottom", items);
         }
     }
 }

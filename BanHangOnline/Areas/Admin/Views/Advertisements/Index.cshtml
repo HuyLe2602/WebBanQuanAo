@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BanHangOnline.Models.EF.Adv>
+
+@{
+    ViewBag.Title = "Quản lý quảng cáo";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Quản lý quảng cáo</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Tiêu đề</th>
+        <th>Hình ảnh</th>
+        <th>Link</th>
+        <th>Loại</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>
+                <img src="@item.Image" width="120" />
+            </td>
+            <td>@item.Link</td>
+            <td>@item.Type</td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.Id }, new { @class = "btn btn-warning btn-sm" })
+                @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
+            </td>
+        </tr>
+    }
+</table>
